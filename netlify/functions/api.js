@@ -6,4 +6,4 @@ const app = require('../../lib/app');
 const wrapper = express();
 wrapper.use(app.normalize);
 wrapper.use(app);
-exports.handler = serverless(wrapper);
+exports.handler = serverless(wrapper, { binary: ['application/pdf'] });

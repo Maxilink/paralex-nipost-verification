@@ -46,3 +46,4 @@ th{color:var(--mut);font-size:.78rem;font-weight:600}tr:last-child td{border:0}
 .dlg{background:var(--card);color:var(--ink);border-radius:16px;padding:24px;max-width:420px;width:100%;border:1px solid var(--line)}
 .dlg h2{font-size:1.2rem}.dlg p{color:var(--mut);margin-top:8px;font-size:.92rem}
 .vres h2{font-size:1.4rem}.vres p{color:var(--ink);margin-top:6px}
+.acts{white-space:nowrap}.acts .link{margin-right:14px}.acts .link:last-child{margin-right:0}

@@ -6,7 +6,9 @@ Registration and verification system.
 - Each registration stores a **Plate No.** (required), and the account stays **active for 12 months**, then becomes **inactive automatically** (status is calculated from the expiry date by the server, so no scheduled job is needed)
 - QR code (contains the user's ID) is generated at registration and can be downloaded
 - **Private by default**: only the **Verify status** page is public. Registering, profiles and the admin dashboard need a staff login.
-- Roles: **staff** (register, view, verify) and **admin** (everything, including delete)
+- Roles: **staff** (register, view, verify, edit name/phone/plate, renew, print certificates) and **admin** (everything, including delete)
+- **Edit**: fix a user's name, phone or plate. **Renew**: adds 12 months to the current expiry (or to today if already expired).
+- **Certificate**: PDF for any user with company logo, details, signature space and the QR code (Users/Admin tab, profile page, or right after registering)
 
 Stack: static frontend (`public/`) + one Netlify Function (`netlify/functions/api.js`, Express app in `lib/app.js`) + PostgreSQL.
 
@@ -28,6 +30,19 @@ Stack: static frontend (`public/`) + one Netlify Function (`netlify/functions/ap
 6. **Custom domain (optional):** Site configuration > Domain management. HTTPS is automatic.
 
 If the first request after deploy shows an error, open Netlify's *Logs > Functions* page: a wrong `DATABASE_URL` is the usual cause.
+
+## Company logo on the certificate
+
+The Paralex logo is already included (`lib/logo.js`). To replace it with another PNG or JPG:
+
+```bash
+npm run logo -- /path/to/new-logo.png
+```
+Commit and push, and Netlify redeploys. The wording at the bottom of the certificate, the company name and the "NIPOST VERIFICATION" line are set at the top of `lib/certificate.js`.
+
+## After pulling this update
+
+Run `npm install` (new packages: `pdfkit`, `qrcode`) and commit the updated `package-lock.json`. No database change is needed.
 
 ## Run locally
 
@@ -53,4 +68,7 @@ npm run dev               # http://localhost:3000
 | GET | `/api/me` | Public |
 | POST | `/api/users` | Staff |
 | GET | `/api/users` | Staff |
+| PATCH | `/api/users/:id` | Staff |
+| POST | `/api/users/:id/renew` | Staff |
+| GET | `/api/users/:id/certificate` | Staff |
 | DELETE | `/api/users/:id` | Admin |
